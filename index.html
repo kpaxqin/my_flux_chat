@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>my chat</title>
+    <link rel="stylesheet" href="./css/chatapp.css"/>
+    <script src="lib/sea.js"></script>
+    <script src="lib/react.js"></script>
+    <script src="lib/JSXTransformer.js"></script>
+    <script src="lib/Flux.js"></script>
+
+</head>
+<body>
+
+<section id="chat"></section>
+
+<script>
+    window.onload= function(){
+        seajs.use(["./js/index"], function(Index){
+            Index.init();
+        })
+    }
+
+</script>
+</body>
+</html>
