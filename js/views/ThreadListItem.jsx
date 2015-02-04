@@ -1,17 +1,25 @@
 define(function(){
-    var i = 0
+    var i = 0;
     return React.createClass({
 
         render: function(){
+            var thread = this.props.thread,
+                lastMsg = thread.lastMessage,
+                isCurrent = this.props.isCurrent;
+
+            var className = (function(){
+                var base = "thread-list-item";
+                return isCurrent ? base + " active": base;
+            })()
 
             return (
-                <li className="thread-list-item">
-                    <h5 className="thread-name">test_{i++}</h5>
+                <li className={className}>
+                    <h5 className="thread-name">{thread.name}</h5>
                     <div className="thread-time">
-                         2014-12-12
+                        {new Date(lastMsg.timestamp)}
                     </div>
                     <div className="thread-last-message">
-                         testestsets
+                        {lastMsg.text}
                     </div>
                 </li>
             )

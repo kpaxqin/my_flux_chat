@@ -1,17 +1,25 @@
 define(function(){
-    var i = 0
+    var i = 0;
     return React.createClass({
 
         render: function(){
+            var thread = this.props.thread,
+                lastMsg = thread.lastMessage,
+                isCurrent = this.props.isCurrent;
+
+            var className = (function(){
+                var base = "thread-list-item";
+                return isCurrent ? base + " active": base;
+            })()
 
             return (
-                React.createElement("li", {className: "thread-list-item"}, 
-                    React.createElement("h5", {className: "thread-name"}, "test_", i++), 
+                React.createElement("li", {className: className}, 
+                    React.createElement("h5", {className: "thread-name"}, thread.name), 
                     React.createElement("div", {className: "thread-time"}, 
-                         "2014-12-12"
+                        new Date(lastMsg.timestamp)
                     ), 
                     React.createElement("div", {className: "thread-last-message"}, 
-                         "testestsets"
+                        lastMsg.text
                     )
                 )
             )
