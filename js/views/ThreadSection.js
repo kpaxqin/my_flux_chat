@@ -4,7 +4,7 @@ define(function(require){
 
     var getInitState = function(){
         return {
-            threads : ThreadStore.getAll(),
+            threads : ThreadStore.getAllChrono(),
             currentId: ThreadStore.getCurrentID(),
             unreadCount: ThreadStore.getUnreadCount()
         }
