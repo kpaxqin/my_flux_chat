@@ -38,7 +38,13 @@ define(function(require){
             //计算current
             if (!_currentID){
                 var sortedThreads = this.getAllChrono();
-                _currentID = sortedThreads[sortedThreads.length - 1].id;
+                this.setCurrentByID(sortedThreads[sortedThreads.length - 1].id);
+            }
+        },
+        setCurrentByID: function(id){
+            if (_threads[id]){
+                _currentID = id;
+                _threads[id].lastMessage.isRead = true;
             }
         },
         getByID: function(id){

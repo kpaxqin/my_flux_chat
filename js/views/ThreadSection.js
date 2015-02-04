@@ -1,11 +1,13 @@
 define(function(require){
     var ThreadListItem = require("./ThreadListItem");
     var ThreadStore = require("../stores/ThreadStore");
+    var UnreadThreadStore = require("../stores/UnreadThreadStore");
 
     var getInitState = function(){
         return {
             threads : ThreadStore.getAllChrono(),
             currentId: ThreadStore.getCurrentID(),
+//            unreadCount: UnreadThreadStore.getUnreadThreadCount()
             unreadCount: ThreadStore.getUnreadCount()
         }
     }
