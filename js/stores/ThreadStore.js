@@ -72,8 +72,20 @@ define(function(require){
         getCurrentID: function(){
             return _currentID;
         },
+        /*
+        * 由于标记message的isRead的工作在MessageStore中，此函数执行时计数出错，认为全部未读
+        * */
         getUnreadCount: function(){
-            return 3;//todo
+            var count = 0;
+            for (var id in _threads){
+                var thread = _threads[id];
+
+                if (!thread.lastMessage.isRead){
+                    count++;
+                }
+            }
+
+            return count;
         }
     });
 
