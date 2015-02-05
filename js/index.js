@@ -4,7 +4,11 @@
 define(function(require){
     var IndexView = require("./views/index");
 
+    var mockdata = require("./utils/mockdata");
+
     var WebAPIUtils = require("./utils/WebAPIUtils");
+
+    mockdata.init();
 
     return {
         init: function(){
