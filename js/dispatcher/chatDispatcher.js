@@ -13,6 +13,12 @@ define(function(require){
                 source: SOURCE_TYPE.SERVER,
                 action: action
             })
+        },
+        handleViewAction: function(action){
+            this.dispatch({
+                source: SOURCE_TYPE.USER_INTERACTION,
+                action: action
+            })
         }
     })
 

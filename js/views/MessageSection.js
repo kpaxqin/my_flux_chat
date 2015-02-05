@@ -2,8 +2,20 @@ define(function(require){
     var MessageStore = require("../stores/MessageStore");
     var ThreadStore = require("../stores/ThreadStore");
     var MessageListItem = require("./MessageListItem");
+    var MessageComposer = require("./MessageComposer");
 
     return React.createClass({
+
+        _onChange: function(){
+            this.forceUpdate();
+        },
+        componentDidMount: function() {
+            MessageStore.on("change", this._onChange, this);
+        },
+
+        componentWillUnmount: function() {
+            MessageStore.off("change", this._onChange);
+        },
 
         render: function(){
             var thread = ThreadStore.getCurrent();
@@ -26,8 +38,7 @@ define(function(require){
                     React.createElement("ul", {className: "message-list"}, 
                         msgListItems
                     ), 
-                    React.createElement("textarea", {className: "message-composer", name: "message"}
-                    )
+                    React.createElement(MessageComposer, null)
                 )
             )
         }

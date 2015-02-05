@@ -4,6 +4,11 @@
 define(function(require){
     return {
         init: function() {
+//            localStorage.clear();
+            var existedMessages = localStorage.getItem("messages");
+            if (existedMessages){
+                return;
+            }
             localStorage.clear();
             localStorage.setItem('messages', JSON.stringify([
                 {

@@ -29,6 +29,17 @@ define(function(require){
     }
 
     var MessageStore = Object.assign({}, Events, {
+        getCreatedMessage: function(text){
+            var timestamp = +new Date();
+            return {
+                id: "m_" + timestamp,
+                threadID: ThreadStore.getCurrentID(),
+                authorName: "Bill",
+                date: new Date(timestamp),
+                text: text,
+                isRead: true
+            }
+        },
         getAll: function(){
             return _messages;
         },
@@ -57,6 +68,14 @@ define(function(require){
                 dispatcher.waitFor([ThreadStore.dispatchToken]);
                 _markReadByThread(ThreadStore.getCurrentID());
                 break;
+            case ACTION_TYPE.THREAD_CLICK :
+                dispatcher.waitFor([ThreadStore.dispatchToken]);
+                _markReadByThread(ThreadStore.getCurrentID());
+                MessageStore.trigger("change");
+                break;
+            case ACTION_TYPE.CREATE_MESSAGE:
+                _messages[action.message.id] = action.message;
+                MessageStore.trigger("change");
 
             default :
         }

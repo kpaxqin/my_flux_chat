@@ -10,6 +10,20 @@ define(function(require){
                 messages = JSON.parse(msgStr);
 
             ServerActionCreator.receiveAll(messages);
+        },
+        addMessage: function(message, thread){
+            var rawMessages = JSON.parse(localStorage.getItem("messages"));
+            rawMessages.push({
+                id: message.id,
+                threadID: message.threadID,
+                threadName: thread.name,
+                authorName: message.authorName,
+                text: message.text,
+                timestamp: +message.date
+            });
+
+            localStorage.setItem("messages", JSON.stringify(rawMessages))
+
         }
     }
 })

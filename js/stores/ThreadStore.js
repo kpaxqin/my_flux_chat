@@ -103,6 +103,10 @@ define(function(require){
                 ThreadStore.init(action.rawMessages);
 
                 break;
+            case ACTION_TYPE.THREAD_CLICK :
+                ThreadStore.setCurrentByID(action.thread.id);
+                ThreadStore.trigger("change");
+                break;
 
             default :
         }

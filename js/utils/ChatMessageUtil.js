@@ -9,7 +9,6 @@ define(function(require){
                 threadID: rawMessage.threadID,
                 authorName: rawMessage.authorName,
                 date: new Date(rawMessage.timestamp),
-                timestamp : rawMessage.timestamp,
                 text: rawMessage.text,
                 isRead: false//default to be false
             }

@@ -3,6 +3,8 @@ define(function(require){
     var ThreadStore = require("../stores/ThreadStore");
     var UnreadThreadStore = require("../stores/UnreadThreadStore");
 
+    var ViewActionCreator = require("../actions/ChatViewActionCreator");
+
     var getInitState = function(){
         return {
             threads : ThreadStore.getAllChrono(),
@@ -12,9 +14,22 @@ define(function(require){
         }
     }
 
-    return React.createClass({
+
+    var ThreadSection =  React.createClass({
         getInitialState: function(){
             return getInitState();
+        },
+        _onChange: function(){
+            this.setState(getInitState());
+        },
+        componentDidMount: function() {
+            ThreadStore.on("change", this._onChange, this);
+            UnreadThreadStore.on("change", this._onChange, this);
+        },
+
+        componentWillUnmount: function() {
+            ThreadStore.off("change", this._onChange);
+            UnreadThreadStore.off("change", this._onChange);
         },
         render: function(){
             var self = this;
@@ -43,6 +58,7 @@ define(function(require){
 
         }
 
-    })
+    });
 
+    return ThreadSection;
 })
