@@ -5,9 +5,11 @@ define(function(require){
 
     var SOURCE_TYPE = Constants.ACTION_SOURCE_TYPE;
 
-    var Dispatcher = Flux.Dispatcher;
+//    var Dispatcher = Flux.Dispatcher;
 
-    return Object.assign(new Dispatcher(), {
+    var dispatcher = Fluxify.dispatcher;
+
+    return Object.assign(dispatcher, {
         handleServerAction: function(action){
             this.dispatch({
                 source: SOURCE_TYPE.SERVER,
