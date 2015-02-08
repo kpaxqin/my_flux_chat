@@ -10,11 +10,11 @@ define(function(require){
             this.forceUpdate();
         },
         componentDidMount: function() {
-            MessageStore.on("change", this._onChange, this);
+            MessageStore.onChange(this._onChange, this);
         },
 
         componentWillUnmount: function() {
-            MessageStore.off("change", this._onChange);
+            MessageStore.offChange(this._onChange);
         },
 
         render: function(){

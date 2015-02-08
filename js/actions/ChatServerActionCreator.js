@@ -2,18 +2,19 @@
  * Created by cdyf on 15-2-4.
  */
 define(function(require){
-    var dispatcher = require("../dispatcher/chatDispatcher");
+    var Fluxify = require("../../lib/Fluxify");
 
-    var Constants = require("../constants/Constants");
-
-    var ACTION_TYPE = Constants.ACTION_TYPE;
+    var dispatcher = Fluxify.dispatcher,
+        ACTION_TYPE = Fluxify.getActionTypes();
 
     return {
         receiveAll: function(msgs){
-            dispatcher.handleServerAction({
-                actionType: ACTION_TYPE.RECEIVE_RAW_MESSAGE,
-                rawMessages: msgs
-            });
+            dispatcher.dispatch({
+                action: {
+                    actionType: ACTION_TYPE.RECEIVE_RAW_MESSAGE,
+                    rawMessages: msgs
+                }
+            })
         }
     }
 });

@@ -2,20 +2,17 @@
  * Created by cdyf on 15-2-4.
  */
 define(function(require){
-    require("../utils/Utils");
-    var Events = require("../utils/Events");
+    var Fluxify = require("../../lib/Fluxify");
 
-    var dispatcher = require("../dispatcher/chatDispatcher");
+    var dispatcher = Fluxify.dispatcher,
+        ACTION_TYPE = Fluxify.getActionTypes();
 
     var ChatMessageUtil = require("../utils/ChatMessageUtil");
-
-    var Constants = require("../constants/Constants");
-    var ACTION_TYPE = Constants.ACTION_TYPE;
 
     var _threads = {},
         _currentID;
 
-    var ThreadStore = Object.assign({}, Events, {
+    var ThreadStore = Fluxify.createStore("ThreadStore", {
         init: function(rawMessages){
 
             //转换得到threads
@@ -79,8 +76,8 @@ define(function(require){
             return _currentID;
         },
         /*
-        * 由于标记message的isRead的工作在MessageStore中，此函数执行时计数出错，认为全部未读
-        * */
+         * 由于标记message的isRead的工作在MessageStore中，此函数执行时计数出错，认为全部未读
+         * */
         getUnreadCount: function(){
             var count = 0;
             for (var id in _threads){
@@ -93,20 +90,24 @@ define(function(require){
 
             return count;
         }
-    });
-
-    ThreadStore.dispatchToken = dispatcher.register(function(payload){
+    }, function(payload){//通过createStore构造的dispatch监听函数this指向构造出的Store
         var action = payload.action;
 
         switch (action.actionType){
             case ACTION_TYPE.RECEIVE_RAW_MESSAGE :
-                ThreadStore.init(action.rawMessages);
+                this.init(action.rawMessages);
 
                 break;
             case ACTION_TYPE.THREAD_CLICK :
-                ThreadStore.setCurrentByID(action.thread.id);
-                ThreadStore.trigger("change");
+                this.setCurrentByID(action.thread.id);
+                this.emitChange();
                 break;
+            case ACTION_TYPE.CREATE_MESSAGE:
+                var currentThread = this.getCurrent();
+
+                currentThread.lastMessage = action.message;
+                currentThread.lastTimestamp = +action.message.date;
+                this.emitChange();
 
             default :
         }

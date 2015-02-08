@@ -4,9 +4,9 @@
 define(function(){
     return {
         ACTION_TYPE: {
-            RECEIVE_RAW_MESSAGE: "RECEIVE_RAW_MESSAGE",
-            THREAD_CLICK: "THREAD_CLICK",
-            CREATE_MESSAGE: "CREATE_MESSAGE"
+            RECEIVE_RAW_MESSAGE: null,
+            THREAD_CLICK: null,
+            CREATE_MESSAGE: null
         },
         ACTION_SOURCE_TYPE: {
             SERVER: "SERVER",

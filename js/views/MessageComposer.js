@@ -6,7 +6,7 @@ define(function(require){
 
     var ENTER_KEY_CODE = 13;
 
-    var MessageComposer = React.createClass({displayName: 'MessageComposer',
+    var MessageComposer = React.createClass({displayName: "MessageComposer",
         getInitialState: function(){
             return {
                 text: ""

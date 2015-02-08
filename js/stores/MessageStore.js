@@ -2,14 +2,14 @@
  * Created by cdyf on 15-2-4.
  */
 define(function(require){
-    require("../utils/Utils");
-    var Events = require("../utils/Events");
+
+    var Fluxify = require("../../lib/Fluxify");
+
+    var dispatcher = Fluxify.dispatcher,
+        ACTION_TYPE = Fluxify.getActionTypes();
 
     var ChatMessageUtil = require("../utils/ChatMessageUtil");
     var ThreadStore = require("./ThreadStore");
-    var dispatcher = require("../dispatcher/chatDispatcher");
-    var Constants = require("../constants/Constants");
-    var ACTION_TYPE = Constants.ACTION_TYPE;
 
     var _messages = {};
 
@@ -28,7 +28,7 @@ define(function(require){
         }
     }
 
-    var MessageStore = Object.assign({}, Events, {
+    var MessageStore = Fluxify.createStore("MessageStore", {
         getCreatedMessage: function(text){
             var timestamp = +new Date();
             return {
@@ -57,9 +57,7 @@ define(function(require){
 
             return result;
         }
-    });
-
-    MessageStore.dispatchToken = dispatcher.register(function(payload){
+    }, function(payload){
         var action = payload.action;
 
         switch (action.actionType){
@@ -71,11 +69,11 @@ define(function(require){
             case ACTION_TYPE.THREAD_CLICK :
                 dispatcher.waitFor([ThreadStore.dispatchToken]);
                 _markReadByThread(ThreadStore.getCurrentID());
-                MessageStore.trigger("change");
+                this.emitChange();
                 break;
             case ACTION_TYPE.CREATE_MESSAGE:
                 _messages[action.message.id] = action.message;
-                MessageStore.trigger("change");
+                this.emitChange();
 
             default :
         }

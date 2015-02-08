@@ -1,15 +1,13 @@
 define(function(require){
-    require("../utils/Utils");
-    var Events = require("../utils/Events");
+    var Fluxify = require("../../lib/Fluxify");
 
-    var dispatcher = require("../dispatcher/chatDispatcher");
+    var dispatcher = Fluxify.dispatcher,
+        ACTION_TYPE = Fluxify.getActionTypes();
+
     var ThreadStore = require("./ThreadStore");
     var MessageStore = require("./MessageStore");
 
-    var Constants = require("../constants/Constants");
-    var ACTION_TYPE = Constants.ACTION_TYPE;
-
-    var UnreadThreadStore = Object.assign({}, Events, {
+    var UnreadThreadStore = Fluxify.createStore("UnreadThreadStore", {
         getUnreadThreadCount: function(){
             var count = 0,
                 _threads = ThreadStore.getAll();
@@ -23,9 +21,7 @@ define(function(require){
 
             return count;
         }
-    });
-
-    UnreadThreadStore.dispatchToken = dispatcher.register(function(payload){
+    }, function(payload){
         var action = payload.action;
 
         switch (action.actionType){
@@ -33,6 +29,7 @@ define(function(require){
                 dispatcher.waitFor([ThreadStore.dispatchToken, MessageStore.dispatchToken])
                 break;
         }
-    })
+    });
+
     return UnreadThreadStore;
 })
