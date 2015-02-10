@@ -3,20 +3,22 @@ define(function(require){
     var ThreadStore = require("../stores/ThreadStore");
     var MessageListItem = require("./MessageListItem");
     var MessageComposer = require("./MessageComposer");
+    var Fluxify = require("../../lib/Fluxify");
 
     return React.createClass({
 
-        _onChange: function(){
-            this.forceUpdate();
-        },
-        componentDidMount: function() {
-            MessageStore.onChange(this._onChange, this);
-        },
-
-        componentWillUnmount: function() {
-            MessageStore.offChange(this._onChange);
-        },
-
+//        _onChange: function(){
+//            this.forceUpdate();
+//        },
+//        componentDidMount: function() {
+//            MessageStore.onChange(this._onChange, this);
+//        },
+//
+//        componentWillUnmount: function() {
+//            MessageStore.offChange(this._onChange);
+//        },
+        mixins: [Fluxify.ReactMixins],
+        watchingStores: [MessageStore],
         render: function(){
             var thread = ThreadStore.getCurrent();
             var messages = MessageStore.getAllForCurrentThread();

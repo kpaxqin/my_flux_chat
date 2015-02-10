@@ -3,6 +3,8 @@ define(function(require){
     var ThreadStore = require("../stores/ThreadStore");
     var UnreadThreadStore = require("../stores/UnreadThreadStore");
 
+    var Fluxify = require("../../lib/Fluxify");
+
     var getInitState = function(){
         return {
             threads : ThreadStore.getAllChrono(),
@@ -17,18 +19,23 @@ define(function(require){
         getInitialState: function(){
             return getInitState();
         },
-        _onChange: function(){
+        mixins: [Fluxify.ReactMixins],
+        watchingStores: [ThreadStore, UnreadThreadStore],
+        onStoreChange: function(){
             this.setState(getInitState());
         },
-        componentDidMount: function() {
-            ThreadStore.onChange(this._onChange, this);
-            UnreadThreadStore.onChange(this._onChange, this);
-        },
-
-        componentWillUnmount: function() {
-            ThreadStore.offChange(this._onChange);
-            UnreadThreadStore.offChange(this._onChange);
-        },
+//        _onChange: function(){
+//            this.setState(getInitState());
+//        },
+//        componentDidMount: function() {
+//            ThreadStore.onChange(this._onChange, this);
+//            UnreadThreadStore.onChange(this._onChange, this);
+//        },
+//
+//        componentWillUnmount: function() {
+//            ThreadStore.offChange(this._onChange);
+//            UnreadThreadStore.offChange(this._onChange);
+//        },
         render: function(){
             var self = this;
             var threadListItems = this.state.threads.map(function(thread){
